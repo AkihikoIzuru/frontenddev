@@ -1,0 +1,284 @@
+/* --- TOMBOL NAMA PRODUK --- */
+.product-name {
+  background-color: #fab82a;
+  font-weight: bold;
+  padding: 12px 15px;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  width: 90%;
+  cursor: pointer;
+  border: none;
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+}
+
+.product-name:hover {
+  background-color: #e08f51;
+  transform: scale(1.05);
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.product-name:active {
+  background-color: #c77741;
+  transform: scale(0.95);
+}
+
+/* --- STYLING UTAMA --- */
+.container {
+  text-align: center;
+  padding: 20px;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 60px;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #ffb84d;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  color: #f0d999;
+  margin-bottom: 20px;
+}
+
+/* --- WRAPPER SCROLL --- */
+.scroll-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  width: 90%;
+  max-width: 1200px;
+  padding: 10px 0;
+}
+
+.grid-container {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 10px;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.grid-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* --- CARD PRODUK --- */
+.product-wrapper {
+  position: relative;
+}
+
+.product-card {
+  width: 250px;
+  height: 320px;
+  background: rgba(250, 213, 111, 0.877);
+  border-radius: 12px;
+  padding: 0px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease-in-out;
+  text-align: center;
+}
+
+.product-card:hover {
+  transform: scale(1.05);
+}
+
+.product-image-container {
+  position: relative;
+  width: 100%;
+  height: 220px;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* --- TOMBOL SCROLL --- */
+.scroll-btn {
+  background: #ffb84d;
+  color: white;
+  font-size: 2rem;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 60%;
+  transform: translateY(-50%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  z-index: 10;
+}
+
+.scroll-btn:hover {
+  background: #ffb84d;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+}
+
+.scroll-btn.left {
+  left: 10px;
+}
+
+.scroll-btn.right {
+  right: 10px;
+}
+
+/* --- PESAN JIKA PRODUK TIDAK DITEMUKAN --- */
+.no-result {
+  font-size: 1.5rem;
+  color: #888;
+  margin-top: 20px;
+}
+
+/* --- EFEK BAYANGAN DI TEPI SCROLL-WRAPPER --- */
+.scroll-wrapper::before,
+.scroll-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50px;
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.scroll-wrapper::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.2), transparent);
+}
+
+.scroll-wrapper::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.2), transparent);
+}
+
+/* --- EFEK LOADING PADA PRODUK --- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.product-card {
+  opacity: 0;
+  animation: fadeInUp 0.5s ease-in-out forwards;
+}
+
+.product-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.product-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.product-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.product-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+/* --- RESPONSIVE DESIGN --- */
+@media (max-width: 992px) {
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .subtitle {
+    font-size: 1.3rem;
+  }
+
+  .scroll-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+  }
+
+  .product-card {
+    width: 200px;
+    height: 280px;
+  }
+
+  .product-image-container {
+    height: 180px;
+  }
+
+  .product-name {
+    font-size: 1rem;
+    padding: 10px 12px;
+  }
+
+  .scroll-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .product-card {
+    width: 180px;
+    height: 250px;
+  }
+
+  .product-image-container {
+    height: 160px;
+  }
+
+  .product-name {
+    font-size: 0.9rem;
+    padding: 8px 10px;
+  }
+
+  .scroll-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+
+  .grid-container {
+    gap: 15px;
+  }
+}

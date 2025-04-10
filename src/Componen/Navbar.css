@@ -1,0 +1,275 @@
+/* Styling untuk Navbar */
+.navbar {
+  background: linear-gradient(to right, #d9732f7a, #4a5b3a4d);
+  padding: 0px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Membagi elemen navbar */
+  position: fixed; /* Navbar tetap di atas saat scroll */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+/* Agar konten tidak tertutup navbar */
+body {
+  padding-top: 70px; /* Sesuaikan dengan tinggi navbar */
+}
+
+/* Container utama */
+.navbar-container {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Styling untuk Logo */
+.navbar-logo-container {
+  display: flex;
+  align-items: center;
+  width: 0%;
+}
+
+.navbar-logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo {
+  width: 80px; /* Perbesar ukuran logo */
+  height: auto;
+  margin-right: 10px;
+}
+
+.navbar-brand {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+}
+
+/* Styling untuk Menu */
+.navbar-menu {
+  list-style: none;
+  display: flex;
+  gap: 50px; /* Jarak antar item menu */
+  justify-content: flex-end;
+  flex-grow: 1;
+  margin-right: 60px; /* Geser menu sedikit ke kiri */
+}
+
+.navbar-item {
+  padding: 10px 0;
+}
+
+.navbar-link {
+  text-decoration: none;
+  font-size: 16px;
+  color: white;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.navbar-link:hover {
+  color: #ffd700;
+}
+
+/* Efek klik pada link navbar */
+.navbar-link:active {
+  transform: scale(0.95);
+  color: #ffa500;
+}
+
+/* Container pencarian */
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 5px 15px;
+  transition: background 0.3s ease-in-out;
+}
+
+.search-container:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Input pencarian */
+.search-input {
+  width: 200px;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 25px;
+  background: transparent;
+  color: white;
+  font-size: 14px;
+  outline: none;
+  transition: width 0.3s ease-in-out;
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Ketika aktif */
+.search-input:focus {
+  width: 250px;
+  background: rgba(255, 255, 255, 0.007);
+  border-radius: 25px;
+  color: rgb(250, 249, 247);
+}
+
+/* Ikon pencarian */
+.search-icon {
+  font-size: 18px;
+  color: rgb(170, 120, 44);
+  margin-right: 10px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.search-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Tombol clear */
+.clear-button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: rgb(96, 102, 18);
+  cursor: pointer;
+  margin-left: 10px;
+  transition: transform 0.2s;
+}
+
+.clear-button:hover {
+  transform: scale(1.2);
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+  .navbar-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(to right, #d9732f7a, #4a5b3a4d);
+    flex-direction: column;
+    gap: 0;
+    margin-right: 0;
+    z-index: 1000;
+  }
+
+  .navbar-menu.active {
+    display: flex;
+  }
+
+  .navbar-item {
+    width: 100%;
+    text-align: center;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .navbar-toggle {
+    display: block;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  .search-container {
+    display: none;
+
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+
+  .search-input:focus {
+    width: 100%;
+  }
+}
+
+@media (min-width: 769px) {
+  .navbar-toggle {
+    display: none;
+  }
+}
+
+/* Efek klik pada ikon pencarian */
+.search-icon:active {
+  transform: scale(0.85);
+  color: #ffcc00;
+}
+
+/* Efek klik pada tombol clear */
+.clear-button:active {
+  transform: scale(0.85);
+  color: #ff4500;
+}
+
+/* Efek klik pada navbar item */
+.navbar-item:active {
+  transform: scale(0.95);
+  transition: transform 0.1s ease-in-out;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.search-input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 300px;
+  outline: none;
+  width: 300px;
+  transition: width 0.3s ease-in-out;
+}
+
+.search-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  display: flex;
+  align-items: center;
+}
+
+/* Admin link in navbar */
+.admin-link {
+  margin-left: 15px;
+  padding: 8px 15px;
+  background-color: #fab82a;
+  color: white;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.admin-link:hover {
+  background-color: #e08f51;
+}
+
+@media (max-width: 768px) {
+  .admin-link {
+    margin: 10px auto;
+    display: block;
+    width: 80%;
+  }
+}
