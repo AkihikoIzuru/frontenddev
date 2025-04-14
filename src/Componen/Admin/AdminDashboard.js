@@ -202,17 +202,6 @@ const AdminDashboard = () => {
                 </div>
               </div>
 
-              <div className="dashboard-card">
-                <div className="dashboard-card-icon">
-                  <DollarSign size={24} />
-                </div>
-                <div className="dashboard-card-content">
-                  <h3>Total Revenue</h3>
-                  <p>{formatCurrency(stats.totalRevenue)}</p>
-                </div>
-              </div>
-            </div>
-
             {/* Recent Products */}
             <div className="admin-content-section">
               <h2 className="admin-section-title">Recent Products</h2>
