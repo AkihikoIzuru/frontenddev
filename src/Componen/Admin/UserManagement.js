@@ -42,55 +42,14 @@ const UserManagement = () => {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem("adminToken");
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/api/users`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        `${process.env.REACT_APP_BASE_URL}api/users`
       );
 
       setUsers(response.data || []);
     } catch (error) {
       console.error("Error fetching users:", error);
       // Set some default data for demonstration
-      setUsers([
-        {
-          _id: "1",
-          name: "John Doe",
-          email: "john@example.com",
-          phone: "081234567890",
-          role: "user",
-        },
-        {
-          _id: "2",
-          name: "Jane Smith",
-          email: "jane@example.com",
-          phone: "081234567891",
-          role: "user",
-        },
-        {
-          _id: "3",
-          name: "Admin User",
-          email: "admin@example.com",
-          phone: "081234567892",
-          role: "admin",
-        },
-        {
-          _id: "4",
-          name: "Sarah Johnson",
-          email: "sarah@example.com",
-          phone: "081234567893",
-          role: "user",
-        },
-        {
-          _id: "5",
-          name: "Michael Brown",
-          email: "michael@example.com",
-          phone: "081234567894",
-          role: "user",
-        },
-      ]);
     } finally {
       setLoading(false);
     }
@@ -166,14 +125,6 @@ const UserManagement = () => {
       };
 
       if (isEditing) {
-        await axios.put(
-          `${process.env.REACT_APP_BASE_URL}/api/users/${currentUser._id}`,
-          userData,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-
         // Update local state
         setUsers(
           users.map((user) =>
@@ -286,7 +237,6 @@ const UserManagement = () => {
                 <tr>
                   <th>Name</th>
                   <th>Email</th>
-                  <th>Phone</th>
                   <th>Role</th>
                   <th>Actions</th>
                 </tr>
@@ -296,7 +246,6 @@ const UserManagement = () => {
                   <tr key={user._id}>
                     <td>{user.name}</td>
                     <td>{user.email}</td>
-                    <td>{user.phone}</td>
                     <td>
                       <span className={`user-role ${user.role}`}>
                         {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
@@ -304,12 +253,6 @@ const UserManagement = () => {
                     </td>
                     <td>
                       <div className="admin-table-actions">
-                        <button
-                          className="admin-table-button edit"
-                          onClick={() => handleEdit(user._id)}
-                        >
-                          <Edit size={16} /> Edit
-                        </button>
                         <button
                           className="admin-table-button delete"
                           onClick={() => handleDelete(user._id)}

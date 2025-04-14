@@ -7,9 +7,7 @@ import {
   Users,
   LogOut,
   ShoppingBag,
-  Mail,
   BarChart2,
-  DollarSign,
   AlertCircle,
 } from "lucide-react";
 import "./AdminStyles.css";
@@ -27,74 +25,36 @@ const AdminDashboard = () => {
   const location = useLocation();
   const [products, setProducts] = useState([]);
 
-  const fetchProducts = async () => {
-    try {
-      const response = await axios.get(
-        `https://backenddev-six.vercel.app/api/products`
-      );
-      setProducts(response.data);
+  // const [recentProducts, setRecentProducts] = useState([]);
 
-      if (response.status === 200) {
+  const fetch = async () => {
+    try {
+      const Presponse = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}api/products`
+      );
+
+      const Tresponse = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}api/transactions`
+      );
+
+      setProducts(Presponse.data);
+
+      if (Presponse.status === 200) {
         setLoading(false);
       }
 
-      setStats(
-        response.data || {
-          totalProducts: 9,
-          totalUsers: 24,
-          totalOrders: 56,
-          totalRevenue: 4500000,
-        }
-      );
+      setStats({
+        totalProducts: Presponse.data.length,
+        totalOrders: Tresponse.data.length,
+      });
 
-      // setLoading(false);
+      setLoading(false);
     } catch (error) {}
   };
 
   useEffect(() => {
-    fetchProducts();
+    fetch();
   }, []);
-
-  // useEffect(() => {
-  //   const fetchDashboardData = async () => {
-  //     try {
-  //       const token = localStorage.getItem("adminToken")
-
-  //       // Fetch dashboard statistics
-  //       const statsResponse = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/admin/dashboard/stats`, {
-  //         headers: { Authorization: `Bearer ${token}` },
-  //       })
-
-  //       // Fetch recent products
-  //       const productsResponse = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/products?limit=5`, {
-  //         headers: { Authorization: `Bearer ${token}` },
-  //       })
-
-  //       setRecentProducts(productsResponse.data || [])
-  //     } catch (error) {
-  //       console.error("Error fetching dashboard data:", error)
-  //       // Set some default data for demonstration
-  //       setStats({
-  //         totalProducts: 9,
-  //         totalUsers: 24,
-  //         totalOrders: 56,
-  //         totalRevenue: 4500000,
-  //       })
-
-  //       setRecentProducts([
-  //         { _id: "1", name: "Apple Tea", price: 7000, stock: 100 },
-  //         { _id: "2", name: "Blackcurrant Tea", price: 7000, stock: 85 },
-  //         { _id: "3", name: "Bublegum Tea", price: 7000, stock: 120 },
-  //         { _id: "4", name: "Grape Tea", price: 7000, stock: 75 },
-  //         { _id: "5", name: "Mango Tea", price: 7000, stock: 90 },
-  //       ])
-  //     } finally {
-  //       setLoading(false)
-  //     }
-  //   }
-
-  //   fetchDashboardData()
-  // }, [])
 
   const handleLogout = () => {
     localStorage.removeItem("adminToken");
@@ -182,7 +142,7 @@ const AdminDashboard = () => {
                 </div>
               </div>
 
-              <div className="dashboard-card">
+              {/* <div className="dashboard-card">
                 <div className="dashboard-card-icon">
                   <Users size={24} />
                 </div>
@@ -190,7 +150,7 @@ const AdminDashboard = () => {
                   <h3>Total Users</h3>
                   <p>{stats.totalUsers}</p>
                 </div>
-              </div>
+              </div> */}
 
               <div className="dashboard-card">
                 <div className="dashboard-card-icon">
@@ -201,6 +161,7 @@ const AdminDashboard = () => {
                   <p>{stats.totalOrders}</p>
                 </div>
               </div>
+            </div>
 
             {/* Recent Products */}
             <div className="admin-content-section">
@@ -211,7 +172,7 @@ const AdminDashboard = () => {
                     <tr>
                       <th>Product Name</th>
                       <th>Price</th>
-                      <th>Stock</th>
+
                       <th>Actions</th>
                     </tr>
                   </thead>
@@ -220,7 +181,7 @@ const AdminDashboard = () => {
                       <tr key={product._id}>
                         <td>{product.name}</td>
                         <td>{formatCurrency(product.price)}</td>
-                        <td>{product.stock}</td>
+
                         <td>
                           <div className="admin-table-actions">
                             <Link
