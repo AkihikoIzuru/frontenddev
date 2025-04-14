@@ -1,43 +1,48 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import axios from "axios"
-import "./AdminStyles.css"
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import "./AdminStyles.css";
 
 const AdminLogin = ({ setIsAuthenticated }) => {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState("")
-  const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setLoading(true)
-    setError("")
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/admin/login`, {
-        email,
-        password,
-      })
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}api/auth/signin`,
+        {
+          email,
+          password,
+        }
+      );
 
       if (response.data.token) {
-        localStorage.setItem("adminToken", response.data.token)
-        localStorage.setItem("adminName", response.data.name || "Admin")
-        setIsAuthenticated(true)
-        navigate("/admin/dashboard")
+        localStorage.setItem("adminToken", response.data.token);
+        localStorage.setItem("adminName", response.data.name || "Admin");
+        setIsAuthenticated(true);
+        navigate("/admin/dashboard");
       } else {
-        setError("Login failed. Please check your credentials.")
+        setError("Login failed. Please check your credentials.");
       }
     } catch (err) {
-      console.error("Login error:", err)
-      setError(err.response?.data?.message || "Login failed. Please try again.")
+      console.error("Login error:", err);
+      setError(
+        err.response?.data?.message || "Login failed. Please try again."
+      );
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="admin-login-container">
@@ -74,7 +79,11 @@ const AdminLogin = ({ setIsAuthenticated }) => {
             />
           </div>
 
-          <button type="submit" className="admin-login-button" disabled={loading}>
+          <button
+            type="submit"
+            className="admin-login-button"
+            disabled={loading}
+          >
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
@@ -86,7 +95,7 @@ const AdminLogin = ({ setIsAuthenticated }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AdminLogin
+export default AdminLogin;
