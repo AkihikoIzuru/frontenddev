@@ -149,26 +149,6 @@ const AdminDashboard = () => {
             <Users size={20} />
             <span>Users</span>
           </Link>
-
-          <Link
-            to="/admin/orders"
-            className={`admin-sidebar-item ${
-              location.pathname === "/admin/orders" ? "active" : ""
-            }`}
-          >
-            <ShoppingBag size={20} />
-            <span>Orders</span>
-          </Link>
-
-          <Link
-            to="/admin/messages"
-            className={`admin-sidebar-item ${
-              location.pathname === "/admin/messages" ? "active" : ""
-            }`}
-          >
-            <Mail size={20} />
-            <span>Messages</span>
-          </Link>
         </div>
 
         <div className="admin-sidebar-footer">
