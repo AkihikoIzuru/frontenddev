@@ -94,15 +94,6 @@ export const Navbar = () => {
               About
             </Link>
           </li>
-          <li className="navbar-item">
-            <Link
-              to="/admin/login"
-              className="admin-link"
-              onClick={() => setMenuOpen(false)}
-            >
-              Admin
-            </Link>
-          </li>
         </ul>
 
         {/* Search dengan ikon */}
