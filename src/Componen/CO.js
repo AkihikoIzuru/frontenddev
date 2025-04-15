@@ -1,5 +1,3 @@
-"use client";
-
 import "./CO.css";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -74,7 +72,7 @@ export const CO = () => {
 
       // Call your backend to create a transaction
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/api/transactions`,
+        `${process.env.REACT_APP_BASE_URL}api/transactions`,
         orderData
       );
 
