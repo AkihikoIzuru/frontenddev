@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
@@ -8,8 +6,6 @@ import {
   Package,
   Users,
   LogOut,
-  ShoppingBag,
-  Mail,
   Edit,
   Trash2,
   Plus,
@@ -26,8 +22,10 @@ const ProductManagement = () => {
     name: "",
     price: "",
     description: "",
-    image: "",
+    image: null,
     stock: "",
+    _id: null,
+    thumbnail: "",
   });
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState("");
@@ -40,7 +38,6 @@ const ProductManagement = () => {
   useEffect(() => {
     fetchProducts();
 
-    // Check if we should open the modal for editing or creating
     const editId = queryParams.get("edit");
     const isNew = queryParams.get("new");
 
@@ -55,13 +52,11 @@ const ProductManagement = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}api/products`
+        `${process.env.REACT_APP_BASE_URL}/api/products`
       );
-
       setProducts(response.data || []);
     } catch (error) {
       console.error("Error fetching products:", error);
-      // Set some default data for demonstration
     } finally {
       setLoading(false);
     }
@@ -72,8 +67,9 @@ const ProductManagement = () => {
       name: "",
       price: "",
       description: "",
-      image: "",
+      image: null,
       stock: "",
+      thumbnail: "",
     });
     setIsEditing(false);
     setShowModal(true);
@@ -82,17 +78,11 @@ const ProductManagement = () => {
   const handleEdit = async (id) => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}api/products/${id}`
+        `${process.env.REACT_APP_BASE_URL}/api/products/${id}`
       );
-
-      setCurrentProduct(response.data);
+      setCurrentProduct({ ...response.data, image: null }); // Reset image to null for file upload
     } catch (error) {
       console.error("Error fetching product details:", error);
-      // Find product in local state for demonstration
-      const product = currentProduct.find((p) => p._id === id);
-      if (product) {
-        setCurrentProduct(product);
-      }
     }
 
     setIsEditing(true);
@@ -105,8 +95,6 @@ const ProductManagement = () => {
         await axios.delete(
           `${process.env.REACT_APP_BASE_URL}api/products/${id}`
         );
-
-        // Update local state
         setProducts(products.filter((product) => product._id !== id));
         showToast("Product deleted successfully", "success");
       } catch (error) {
@@ -120,43 +108,45 @@ const ProductManagement = () => {
     e.preventDefault();
     setError("");
 
-    try {
-      const productData = {
-        name: currentProduct.name,
-        price: Number(currentProduct.price),
-        description: currentProduct.description,
-        image: currentProduct.image,
-        stock: Number(currentProduct.stock),
-      };
+    const formData = new FormData();
+    formData.append("name", currentProduct.name);
+    formData.append("price", currentProduct.price);
+    formData.append("description", currentProduct.description);
+    formData.append("stock", currentProduct.stock);
 
+    if (currentProduct.image) {
+      formData.append("thumbnail", currentProduct.image);
+    }
+
+    try {
       if (isEditing) {
         await axios.patch(
-          `${process.env.REACT_APP_BASE_URL}api/products/${currentProduct._id}`,
-          productData
+          `${process.env.REACT_APP_BASE_URL}/api/products/${currentProduct._id}`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
         );
-
-        // Update local state
-        setProducts(
-          products.map((product) =>
-            product._id === currentProduct._id
-              ? { ...product, ...productData }
-              : product
-          )
-        );
-
+        fetchProducts();
         showToast("Product updated successfully", "success");
       } else {
         const response = await axios.post(
-          `${process.env.REACT_APP_BASE_URL}api/products`,
-          productData
+          `${process.env.REACT_APP_BASE_URL}/api/products`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
         );
-
-        // Update local state
         setProducts([...products, response.data]);
         showToast("Product added successfully", "success");
       }
 
       setShowModal(false);
+      navigate("/admin/products");
     } catch (error) {
       console.error("Error saving product:", error);
       setError(error.response?.data?.message || "Failed to save product");
@@ -164,8 +154,12 @@ const ProductManagement = () => {
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setCurrentProduct({ ...currentProduct, [name]: value });
+    const { name, value, type, files } = e.target;
+    if (type === "file") {
+      setCurrentProduct({ ...currentProduct, image: files[0] });
+    } else {
+      setCurrentProduct({ ...currentProduct, [name]: value });
+    }
   };
 
   const handleLogout = () => {
@@ -255,6 +249,7 @@ const ProductManagement = () => {
                   <th>Image</th>
                   <th>Name</th>
                   <th>Price</th>
+                  <th>Description</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -275,7 +270,7 @@ const ProductManagement = () => {
                     </td>
                     <td>{product.name}</td>
                     <td>{formatCurrency(product.price)}</td>
-
+                    <td>{product.description}</td>
                     <td>
                       <div className="admin-table-actions">
                         <button
@@ -321,7 +316,11 @@ const ProductManagement = () => {
               <div className="admin-modal-body">
                 {error && <div className="admin-form-error">{error}</div>}
 
-                <form onSubmit={handleSubmit} className="admin-form">
+                <form
+                  onSubmit={handleSubmit}
+                  className="admin-form"
+                  encType="multipart/form-data"
+                >
                   <div className="admin-form-group">
                     <label htmlFor="name">Product Name</label>
                     <input
@@ -345,12 +344,12 @@ const ProductManagement = () => {
                   </div>
 
                   <div className="admin-form-group">
-                    <label htmlFor="image">Image URL</label>
+                    <label htmlFor="image">Image File</label>
                     <input
-                      type="text"
+                      type="file"
                       id="image"
                       name="image"
-                      value={currentProduct.image}
+                      accept="image/*"
                       onChange={handleInputChange}
                     />
                   </div>

@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
@@ -8,9 +6,6 @@ import {
   Package,
   Users,
   LogOut,
-  ShoppingBag,
-  Mail,
-  Edit,
   Trash2,
   UserPlus,
   X,
@@ -43,7 +38,7 @@ const UserManagement = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}api/users`
+        `${process.env.REACT_APP_BASE_URL}/api/users`
       );
 
       setUsers(response.data || []);

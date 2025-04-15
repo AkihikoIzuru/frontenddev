@@ -9,7 +9,6 @@ export const CO = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const product = location.state || JSON.parse(localStorage.getItem("product"));
-  const [size, setSize] = useState("small");
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
   const [customerInfo, setCustomerInfo] = useState({
@@ -46,7 +45,7 @@ export const CO = () => {
   };
 
   const calculateTotal = () => {
-    const basePrice = size === "small" ? 7000 : 9000;
+    const basePrice = product.price;
     return basePrice * quantity;
   };
 
@@ -70,13 +69,12 @@ export const CO = () => {
         product_name: product.name,
         amount: calculateTotal(),
         quantity: quantity,
-        size: size,
         first_name: customerInfo.name,
       };
 
       // Call your backend to create a transaction
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}api/transactions`,
+        `${process.env.REACT_APP_BASE_URL}/api/transactions`,
         orderData
       );
 
@@ -115,24 +113,7 @@ export const CO = () => {
         />
         <div className="checkout-details">
           <h2 className="checkout-product-name">{product.name}</h2>
-          <p className="checkout-description">
-            Nikmati teh Nusantara yang autentik.
-          </p>
-
-          <div className="size-options">
-            <div
-              className={`size-option ${size === "small" ? "selected" : ""}`}
-              onClick={() => setSize("small")}
-            >
-              Small - Rp 7.000
-            </div>
-            <div
-              className={`size-option ${size === "big" ? "selected" : ""}`}
-              onClick={() => setSize("big")}
-            >
-              Big - Rp 9.000
-            </div>
-          </div>
+          <p className="checkout-description">{product.description}</p>
 
           <div className="quantity-selector">
             <button

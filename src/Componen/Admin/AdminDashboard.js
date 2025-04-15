@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
@@ -30,11 +32,11 @@ const AdminDashboard = () => {
   const fetch = async () => {
     try {
       const Presponse = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}api/products`
+        `${process.env.REACT_APP_BASE_URL}/api/products`
       );
 
       const Tresponse = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}api/transactions`
+        `${process.env.REACT_APP_BASE_URL}/api/transactions`
       );
 
       setProducts(Presponse.data);

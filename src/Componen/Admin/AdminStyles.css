@@ -109,6 +109,7 @@
 /* Admin Dashboard Styles */
 .admin-dashboard {
   display: flex;
+  min-width: 100vw;
   min-height: 100vh;
 }
 
@@ -455,6 +456,11 @@
 
 /* Responsive Styles */
 @media (max-width: 768px) {
+  .admin-dashboard {
+    display: flex;
+    min-height: 100vh;
+  }
+
   .admin-sidebar {
     width: 70px;
     overflow: hidden;

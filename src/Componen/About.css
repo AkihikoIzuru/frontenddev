@@ -1,3 +1,4 @@
+/* Improve responsive styles for About component */
 /* --- GLOBAL STYLES --- */
 body {
   margin: 0;
@@ -7,8 +8,8 @@ body {
 .about-container {
   width: 100%;
   max-width: 1200px;
-  margin: 100px auto 0;
-  padding: 60px 20px;
+  margin: 80px auto 0;
+  padding: 40px 20px;
   text-align: center;
   font-family: "Poppins", sans-serif;
   background-color: transparent;
@@ -19,14 +20,14 @@ body {
 
 /* --- HEADER --- */
 .about-header {
-  margin-bottom: 60px;
+  margin-bottom: 50px;
 }
 
 .about-title {
-  font-size: 2.8rem;
+  font-size: 2.5rem;
   font-weight: bold;
   color: #ffb84d;
-  animation: fadeIn 1s ease-in-out;
+  margin-bottom: 15px;
 }
 
 .about-subtitle {
@@ -34,7 +35,7 @@ body {
   color: #f0d999;
   max-width: 600px;
   margin: 0 auto;
-  animation: fadeIn 1.2s ease-in-out;
+  line-height: 1.6;
 }
 
 /* --- SECTIONS --- */
@@ -42,9 +43,8 @@ body {
   display: flex;
   align-items: center;
   gap: 40px;
-  margin-bottom: 80px;
+  margin-bottom: 60px;
   text-align: left;
-  animation: fadeInUp 0.8s ease-in-out forwards;
 }
 
 .about-section.reverse {
@@ -67,7 +67,7 @@ body {
 }
 
 .about-image:hover {
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
 
 /* --- TEXT CONTAINER --- */
@@ -85,6 +85,7 @@ body {
 .about-text ul {
   font-size: 1rem;
   color: #ffe5b4;
+  line-height: 1.6;
 }
 
 .about-text ul {
@@ -92,19 +93,19 @@ body {
 }
 
 .about-text ul li {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   list-style-type: disc;
 }
 
 /* --- CALL TO ACTION --- */
 .about-cta {
   text-align: center;
-  margin-top: 70px;
-  padding: 50px;
+  margin-top: 50px;
+  padding: 40px;
   background-color: #d68a32;
   color: white;
   border-radius: 10px;
-  animation: fadeIn 1s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .about-cta h2 {
@@ -115,23 +116,24 @@ body {
 .about-cta p {
   font-size: 1.1rem;
   margin-bottom: 30px;
+  line-height: 1.6;
 }
 
 .about-button {
   background-color: #ffcc66;
   color: #2e5545;
-  font-size: 1.2rem;
-  padding: 14px 24px;
+  font-size: 1.1rem;
+  padding: 12px 24px;
   border: none;
   border-radius: 30px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.3s;
+  font-weight: 600;
 }
 
 .about-button:hover {
   background-color: #ffb84d;
   transform: scale(1.05);
-  border-radius: 30px;
 }
 
 /* --- ANIMATIONS --- */
@@ -157,18 +159,19 @@ body {
 
 /* --- FOOTER --- */
 .about-footer {
-  background-color: #222;
+  background-color: rgba(34, 34, 34, 0.8);
   color: white;
   text-align: center;
-  padding: 20px;
+  padding: 25px;
   margin-top: 30px;
+  border-radius: 10px;
 }
 
 .footer-icons {
   display: flex;
   justify-content: center;
-  gap: 15px;
-  margin-bottom: 10px;
+  gap: 20px;
+  margin-bottom: 15px;
 }
 
 .footer-icon {
@@ -179,10 +182,11 @@ body {
 
 .footer-icon:hover {
   color: #f4c430;
+  transform: scale(1.2);
 }
 
 .footer-contact p {
-  margin: 5px 0;
+  margin: 8px 0;
   font-size: 14px;
 }
 
@@ -192,8 +196,12 @@ body {
 
 /* --- RESPONSIVE STYLES --- */
 @media (max-width: 992px) {
+  .about-container {
+    padding: 30px 20px;
+  }
+
   .about-title {
-    font-size: 2.4rem;
+    font-size: 2.2rem;
   }
 
   .about-subtitle {
@@ -201,26 +209,34 @@ body {
   }
 
   .about-image {
-    max-width: 400px;
+    max-width: 380px;
   }
 
   .about-text h2 {
     font-size: 1.6rem;
   }
+
+  .about-cta {
+    padding: 30px;
+  }
+
+  .about-cta h2 {
+    font-size: 1.8rem;
+  }
 }
 
 @media (max-width: 768px) {
   .about-container {
-    margin-top: 80px;
-    padding: 40px 15px;
+    margin-top: 70px;
+    padding: 25px 15px;
   }
 
   .about-header {
-    margin-bottom: 40px;
+    margin-bottom: 30px;
   }
 
   .about-title {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 
   .about-subtitle {
@@ -230,7 +246,8 @@ body {
   .about-section {
     flex-direction: column;
     gap: 20px;
-    margin-bottom: 50px;
+    margin-bottom: 40px;
+    text-align: center;
   }
 
   .about-section.reverse {
@@ -238,7 +255,7 @@ body {
   }
 
   .about-image {
-    max-width: 350px;
+    max-width: 320px;
   }
 
   .about-text h2 {
@@ -250,12 +267,18 @@ body {
     text-align: center;
   }
 
+  .about-text ul {
+    text-align: left;
+    display: inline-block;
+  }
+
   .about-cta {
-    padding: 30px 20px;
+    padding: 25px 15px;
+    margin-top: 30px;
   }
 
   .about-cta h2 {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
   }
 
   .about-cta p {
@@ -264,13 +287,21 @@ body {
 
   .about-button {
     font-size: 1rem;
-    padding: 12px 20px;
+    padding: 10px 20px;
+  }
+
+  .footer-icons {
+    gap: 15px;
   }
 }
 
 @media (max-width: 480px) {
+  .about-container {
+    padding: 20px 10px;
+  }
+
   .about-title {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
 
   .about-subtitle {
@@ -291,7 +322,11 @@ body {
   }
 
   .about-cta h2 {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
+  }
+
+  .about-cta p {
+    font-size: 0.9rem;
   }
 
   .about-button {

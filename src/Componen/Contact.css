@@ -1,18 +1,20 @@
+/* Improve responsive styles for Contact component */
 .contact-container {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 90px;
+  align-items: stretch;
+  padding: 40px;
   animation: fadeIn 1s ease-in-out;
-  margin-top: 60px;
+  margin-top: 80px;
+  gap: 30px;
 }
 
 .contact-left {
   width: 45%;
   background-color: #f0f0f0;
-  padding: 20px;
+  padding: 30px;
   border-radius: 10px;
-  animation: slideInLeft 1s ease-in-out;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 @keyframes slideInLeft {
@@ -30,26 +32,29 @@
   font-size: 32px;
   font-weight: bold;
   color: #333;
+  margin-bottom: 15px;
 }
 
 .contact-description {
   font-size: 16px;
   color: #555;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  line-height: 1.6;
 }
 
 .contact-options {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .contact-option {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   background-color: #e6e6e6;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 15px;
+  border-radius: 8px;
   transition: background-color 0.3s ease-in-out;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .contact-option:hover {
@@ -59,25 +64,33 @@
 .contact-icon {
   margin-right: 20px;
   color: #333;
+  flex-shrink: 0;
+}
+
+.contact-link {
+  color: #333;
+  text-decoration: none;
+  word-break: break-word;
 }
 
 .follow-us {
   background-color: #f0f0f0;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 20px;
+  border-radius: 8px;
 }
 
 .follow-us h3 {
   font-size: 20px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .social-icons {
   display: flex;
-  gap: 15px;
+  gap: 20px;
   background-color: #e6e6e6;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
 }
 
 .social-icon {
@@ -93,9 +106,9 @@
 .contact-right {
   width: 50%;
   background-color: #f0f0f0;
-  padding: 20px;
+  padding: 30px;
   border-radius: 10px;
-  animation: slideInRight 1s ease-in-out;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 @keyframes slideInRight {
@@ -112,71 +125,55 @@
 .contact-form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
 }
 
 .form-row {
   display: flex;
-  gap: 10px;
+  gap: 15px;
 }
 
 .input-field,
 .textarea-field {
   width: 100%;
-  padding: 10px;
+  padding: 12px 15px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 8px;
   background-color: #ffffff;
+  font-size: 16px;
 }
 
 .textarea-field {
-  height: 100px;
+  height: 120px;
   resize: none;
 }
 
 .submit-button {
-  padding: 10px 15px;
+  padding: 12px 20px;
   background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s ease-in-out;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  box-shadow: 0 4px 6px rgba(0, 123, 255, 0.3);
 }
 
 .submit-button:hover {
   background-color: #0056b3;
   transform: scale(1.05);
+  box-shadow: 0 5px 8px rgba(0, 86, 179, 0.4);
 }
 
 .submit-button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
-}
-
-.contact-left,
-.contact-right {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Bayangan lembut */
-}
-
-.contact-option {
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Bayangan untuk opsi kontak */
-}
-
-.social-icons {
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12); /* Bayangan untuk ikon media sosial */
-}
-
-.submit-button {
-  box-shadow: 0 4px 6px rgba(0, 123, 255, 0.3); /* Bayangan biru pada tombol */
-}
-
-.submit-button:hover {
-  box-shadow: 0 5px 8px rgba(0, 86, 179, 0.4); /* Efek bayangan lebih jelas saat hover */
 }
 
 /* Toast notification */
@@ -225,24 +222,33 @@
 /* Responsive styles */
 @media (max-width: 992px) {
   .contact-container {
-    padding: 60px 40px;
+    padding: 30px;
+  }
+
+  .contact-title {
+    font-size: 28px;
   }
 }
 
 @media (max-width: 768px) {
   .contact-container {
     flex-direction: column;
-    padding: 40px 20px;
+    padding: 20px;
+    margin-top: 60px;
   }
 
   .contact-left,
   .contact-right {
     width: 100%;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
   }
 
   .contact-title {
-    font-size: 28px;
+    font-size: 24px;
+  }
+
+  .contact-description {
+    font-size: 15px;
   }
 }
 
@@ -253,6 +259,24 @@
   }
 
   .contact-container {
-    padding: 30px 15px;
+    padding: 15px;
+  }
+
+  .contact-left,
+  .contact-right {
+    padding: 20px;
+  }
+
+  .contact-option {
+    padding: 12px;
+  }
+
+  .contact-icon {
+    margin-right: 15px;
+  }
+
+  .submit-button {
+    padding: 10px 15px;
+    font-size: 15px;
   }
 }

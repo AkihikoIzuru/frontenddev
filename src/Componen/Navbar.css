@@ -1,20 +1,21 @@
 /* Styling untuk Navbar */
 .navbar {
   background: linear-gradient(to right, #d9732f7a, #4a5b3a4d);
-  padding: 0px 0px;
+  padding: 10px 20px;
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Membagi elemen navbar */
-  position: fixed; /* Navbar tetap di atas saat scroll */
+  justify-content: space-between;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Agar konten tidak tertutup navbar */
 body {
-  padding-top: 70px; /* Sesuaikan dengan tinggi navbar */
+  padding-top: 70px;
 }
 
 /* Container utama */
@@ -24,22 +25,17 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin: 0 auto;
 }
 
 /* Styling untuk Logo */
 .navbar-logo-container {
   display: flex;
   align-items: center;
-  width: 0%;
-}
-
-.navbar-logo-container {
-  display: flex;
-  align-items: center;
 }
 
 .navbar-logo {
-  width: 80px; /* Perbesar ukuran logo */
+  width: 50px;
   height: auto;
   margin-right: 10px;
 }
@@ -54,10 +50,9 @@ body {
 .navbar-menu {
   list-style: none;
   display: flex;
-  gap: 50px; /* Jarak antar item menu */
-  justify-content: flex-end;
-  flex-grow: 1;
-  margin-right: 60px; /* Geser menu sedikit ke kiri */
+  gap: 30px;
+  margin: 0;
+  padding: 0;
 }
 
 .navbar-item {
@@ -87,6 +82,7 @@ body {
   position: relative;
   display: flex;
   align-items: center;
+  border: 1px solid white;
   border-radius: 25px;
   background: rgba(255, 255, 255, 0.2);
   padding: 5px 15px;
@@ -101,12 +97,12 @@ body {
 .search-input {
   width: 200px;
   padding: 8px 15px;
-  border: none;
   border-radius: 25px;
   background: transparent;
   color: white;
   font-size: 14px;
   outline: none;
+  border: none;
   transition: width 0.3s ease-in-out;
 }
 
@@ -116,6 +112,8 @@ body {
 
 /* Ketika aktif */
 .search-input:focus {
+  outline: none;
+  border: none;
   width: 250px;
   background: rgba(255, 255, 255, 0.007);
   border-radius: 25px;
@@ -124,15 +122,11 @@ body {
 
 /* Ikon pencarian */
 .search-icon {
-  font-size: 18px;
-  color: rgb(170, 120, 44);
-  margin-right: 10px;
+  background: none;
+  border: none;
   cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.search-icon:hover {
-  transform: scale(1.1);
+  display: flex;
+  align-items: center;
 }
 
 /* Tombol clear */
@@ -150,60 +144,30 @@ body {
   transform: scale(1.2);
 }
 
-/* Responsif */
-@media (max-width: 768px) {
-  .navbar-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background: linear-gradient(to right, #d9732f7a, #4a5b3a4d);
-    flex-direction: column;
-    gap: 0;
-    margin-right: 0;
-    z-index: 1000;
-  }
-
-  .navbar-menu.active {
-    display: flex;
-  }
-
-  .navbar-item {
-    width: 100%;
-    text-align: center;
-    padding: 15px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .navbar-toggle {
-    display: block;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-  }
-
-  .search-container {
-    display: none;
-    width: 100%;
-    margin-top: 10px;
-  }
-
-  .search-input {
-    width: 100%;
-  }
-
-  .search-input:focus {
-    width: 100%;
-  }
+/* Mobile menu toggle button */
+.navbar-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  z-index: 1001;
 }
 
-@media (min-width: 769px) {
-  .navbar-toggle {
-    display: none;
-  }
+/* Admin link in navbar */
+.admin-link {
+  margin-left: 15px;
+  padding: 8px 15px;
+  background-color: #fab82a;
+  color: white;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.admin-link:hover {
+  background-color: #e08f51;
 }
 
 /* Efek klik pada ikon pencarian */
@@ -234,6 +198,7 @@ body {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 300px;
+  border: none;
   outline: none;
   width: 300px;
   transition: width 0.3s ease-in-out;
@@ -249,26 +214,92 @@ body {
   align-items: center;
 }
 
-/* Admin link in navbar */
-.admin-link {
-  margin-left: 15px;
-  padding: 8px 15px;
-  background-color: #fab82a;
-  color: white;
-  border-radius: 20px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: background-color 0.3s;
-}
+/* Mobile menu styles */
+@media (max-width: 992px) {
+  .navbar-menu {
+    gap: 20px;
+  }
 
-.admin-link:hover {
-  background-color: #e08f51;
+  .search-input {
+    width: 150px;
+  }
+
+  .search-input:focus {
+    width: 200px;
+  }
 }
 
 @media (max-width: 768px) {
+  .navbar {
+    padding: 10px 15px;
+  }
+
+  .navbar-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .navbar-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #d9732f, #4a5b3a);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+  }
+
+  .navbar-menu.active {
+    transform: translateX(0);
+  }
+
+  .navbar-item {
+    padding: 15px 0;
+  }
+
+  .navbar-link {
+    font-size: 20px;
+  }
+
+  .search-container {
+    display: none;
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 300px;
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  .search-input {
+    width: 100%;
+  }
+
+  .search-input:focus {
+    width: 100%;
+  }
+
   .admin-link {
     margin: 10px auto;
     display: block;
     width: 80%;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-logo {
+    width: 40px;
+  }
+
+  .navbar-brand {
+    font-size: 16px;
   }
 }
