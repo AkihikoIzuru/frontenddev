@@ -30,11 +30,11 @@ const AdminDashboard = () => {
   const fetch = async () => {
     try {
       const Presponse = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/api/products`
+        `${process.env.REACT_APP_BASE_URL}api/products`
       );
 
       const Tresponse = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/api/transactions`
+        `${process.env.REACT_APP_BASE_URL}api/transactions`
       );
 
       setProducts(Presponse.data);

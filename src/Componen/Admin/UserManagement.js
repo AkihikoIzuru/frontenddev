@@ -38,7 +38,7 @@ const UserManagement = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/api/users`
+        `${process.env.REACT_APP_BASE_URL}api/users`
       );
 
       setUsers(response.data || []);
@@ -65,7 +65,7 @@ const UserManagement = () => {
     try {
       const token = localStorage.getItem("adminToken");
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/api/users/${id}`,
+        `${process.env.REACT_APP_BASE_URL}api/users/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

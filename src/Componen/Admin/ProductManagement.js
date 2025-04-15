@@ -52,7 +52,7 @@ const ProductManagement = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/api/products`
+        `${process.env.REACT_APP_BASE_URL}api/products`
       );
       setProducts(response.data || []);
     } catch (error) {
@@ -78,7 +78,7 @@ const ProductManagement = () => {
   const handleEdit = async (id) => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/api/products/${id}`
+        `${process.env.REACT_APP_BASE_URL}api/products/${id}`
       );
       setCurrentProduct({ ...response.data, image: null }); // Reset image to null for file upload
     } catch (error) {
