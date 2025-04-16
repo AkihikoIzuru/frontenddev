@@ -121,7 +121,7 @@ const ProductManagement = () => {
     try {
       if (isEditing) {
         await axios.patch(
-          `${process.env.REACT_APP_BASE_URL}/api/products/${currentProduct._id}`,
+          `${process.env.REACT_APP_BASE_URL}api/products/${currentProduct._id}`,
           formData,
           {
             headers: {
@@ -133,7 +133,7 @@ const ProductManagement = () => {
         showToast("Product updated successfully", "success");
       } else {
         const response = await axios.post(
-          `${process.env.REACT_APP_BASE_URL}/api/products`,
+          `${process.env.REACT_APP_BASE_URL}api/products`,
           formData,
           {
             headers: {
