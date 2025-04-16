@@ -1,16 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import {
-  Home,
-  Package,
-  Users,
-  LogOut,
-  Trash2,
-  UserPlus,
-  X,
-  Save,
-} from "lucide-react";
+import { Home, Package, Users, LogOut, Trash2, X, Save } from "lucide-react";
 import "./AdminStyles.css";
 
 const UserManagement = () => {
@@ -23,7 +14,6 @@ const UserManagement = () => {
     phone: "",
     role: "user",
   });
-  const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState("");
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
 
@@ -40,25 +30,12 @@ const UserManagement = () => {
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}api/users`
       );
-
       setUsers(response.data || []);
     } catch (error) {
       console.error("Error fetching users:", error);
-      // Set some default data for demonstration
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleAddNew = () => {
-    setCurrentUser({
-      name: "",
-      email: "",
-      phone: "",
-      role: "user",
-    });
-    setIsEditing(false);
-    setShowModal(true);
   };
 
   const handleEdit = async (id) => {
@@ -70,18 +47,14 @@ const UserManagement = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-
       setCurrentUser(response.data);
     } catch (error) {
       console.error("Error fetching user details:", error);
-      // Find user in local state for demonstration
       const user = users.find((u) => u._id === id);
       if (user) {
         setCurrentUser(user);
       }
     }
-
-    setIsEditing(true);
     setShowModal(true);
   };
 
@@ -95,8 +68,6 @@ const UserManagement = () => {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-
-        // Update local state
         setUsers(users.filter((user) => user._id !== id));
         showToast("User deleted successfully", "success");
       } catch (error) {
@@ -119,33 +90,24 @@ const UserManagement = () => {
         role: currentUser.role,
       };
 
-      if (isEditing) {
-        // Update local state
-        setUsers(
-          users.map((user) =>
-            user._id === currentUser._id ? { ...user, ...userData } : user
-          )
-        );
+      await axios.put(
+        `${process.env.REACT_APP_BASE_URL}/api/users/${currentUser._id}`,
+        userData,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
-        showToast("User updated successfully", "success");
-      } else {
-        const response = await axios.post(
-          `${process.env.REACT_APP_BASE_URL}/api/users`,
-          userData,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-
-        // Update local state
-        setUsers([...users, response.data]);
-        showToast("User added successfully", "success");
-      }
-
+      setUsers(
+        users.map((user) =>
+          user._id === currentUser._id ? { ...user, ...userData } : user
+        )
+      );
+      showToast("User updated successfully", "success");
       setShowModal(false);
     } catch (error) {
-      console.error("Error saving user:", error);
-      setError(error.response?.data?.message || "Failed to save user");
+      console.error("Error updating user:", error);
+      setError(error.response?.data?.message || "Failed to update user");
     }
   };
 
@@ -167,7 +129,6 @@ const UserManagement = () => {
 
   return (
     <div className="admin-dashboard">
-      {/* Sidebar */}
       <div className="admin-sidebar">
         <div className="admin-sidebar-header">
           <h2>Nusantara Brew</h2>
@@ -214,13 +175,9 @@ const UserManagement = () => {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="admin-content">
         <div className="admin-content-header">
           <h1 className="admin-content-title">User Management</h1>
-          <button className="admin-form-button primary" onClick={handleAddNew}>
-            <UserPlus size={18} /> Add New User
-          </button>
         </div>
 
         {loading ? (
@@ -263,14 +220,11 @@ const UserManagement = () => {
           </div>
         )}
 
-        {/* User Form Modal */}
         {showModal && (
           <div className="admin-modal-overlay">
             <div className="admin-modal">
               <div className="admin-modal-header">
-                <h2 className="admin-modal-title">
-                  {isEditing ? "Edit User" : "Add New User"}
-                </h2>
+                <h2 className="admin-modal-title">Edit User</h2>
                 <button
                   className="admin-modal-close"
                   onClick={() => setShowModal(false)}
@@ -342,8 +296,7 @@ const UserManagement = () => {
                       Cancel
                     </button>
                     <button type="submit" className="admin-form-button primary">
-                      <Save size={18} />{" "}
-                      {isEditing ? "Update User" : "Add User"}
+                      <Save size={18} /> Update User
                     </button>
                   </div>
                 </form>
@@ -352,7 +305,6 @@ const UserManagement = () => {
           </div>
         )}
 
-        {/* Toast Notification */}
         {toast.show && (
           <div className={`toast toast-${toast.type}`}>{toast.message}</div>
         )}

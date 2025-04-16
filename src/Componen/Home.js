@@ -7,6 +7,7 @@ export const Home = () => {
   return (
     <div className="Home">
       <div className="hero">
+        {/* Bagian judul dan deskripsi toko */}
         <div className="home-title">
           <h2>
             Selamat Datang <br />
@@ -18,11 +19,14 @@ export const Home = () => {
             menyajikan produk-produk yang berkualitas tinggi dan lezat, sehingga
             Anda dapat menikmati rasa Nusantara yang autentik.
           </p>
+
+          {/* Tombol untuk menuju halaman produk */}
           <Link to="/Product">
             <button className="order-button">Order Now</button>
           </Link>
         </div>
 
+        {/* Gambar utama pada halaman home */}
         <div className="home-image-wrap">
           <img
             src={nusantaraBrewImage || "/placeholder.svg"}

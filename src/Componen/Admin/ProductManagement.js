@@ -15,53 +15,60 @@ import {
 import "./AdminStyles.css";
 
 const ProductManagement = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
+  // State untuk manajemen produk
+  const [products, setProducts] = useState([]); // Menyimpan daftar produk
+  const [loading, setLoading] = useState(true); // Status loading saat fetch data
+  const [showModal, setShowModal] = useState(false); // Kontrol tampilan modal form
   const [currentProduct, setCurrentProduct] = useState({
+    // Data produk yang sedang diedit/ditambah
     name: "",
     price: "",
     description: "",
-    image: null,
+    image: null, // File gambar yang akan diupload
     stock: "",
-    _id: null,
-    thumbnail: "",
+    _id: null, // ID produk (null untuk produk baru)
+    thumbnail: "", // URL gambar thumbnail
   });
-  const [isEditing, setIsEditing] = useState(false);
-  const [error, setError] = useState("");
-  const [toast, setToast] = useState({ show: false, message: "", type: "" });
+  const [isEditing, setIsEditing] = useState(false); // Status edit/tambah baru
+  const [error, setError] = useState(""); // Pesan error
+  const [toast, setToast] = useState({ show: false, message: "", type: "" }); // Notifikasi toast
 
+  // Hook untuk routing
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
+  // Effect untuk load data dan cek parameter URL
   useEffect(() => {
-    fetchProducts();
+    fetchProducts(); // Ambil data produk saat komponen mount
 
+    // Cek parameter URL untuk edit/tambah produk
     const editId = queryParams.get("edit");
     const isNew = queryParams.get("new");
 
     if (editId) {
-      handleEdit(editId);
+      handleEdit(editId); // Buka modal edit jika ada parameter edit
     } else if (isNew) {
-      handleAddNew();
+      handleAddNew(); // Buka modal tambah baru jika ada parameter new
     }
-  }, [location.search]);
+  }, [location.search]); // Jalankan ulang saat parameter URL berubah
 
+  // Fungsi untuk mengambil data produk dari API
   const fetchProducts = async () => {
     try {
       setLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}api/products`
       );
-      setProducts(response.data || []);
+      setProducts(response.data || []); // Simpan data produk
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error("Gagal mengambil data produk:", error);
     } finally {
       setLoading(false);
     }
   };
 
+  // Fungsi untuk membuka modal tambah produk baru
   const handleAddNew = () => {
     setCurrentProduct({
       name: "",
@@ -71,55 +78,63 @@ const ProductManagement = () => {
       stock: "",
       thumbnail: "",
     });
-    setIsEditing(false);
-    setShowModal(true);
+    setIsEditing(false); // Set status bukan edit
+    setShowModal(true); // Tampilkan modal
   };
 
+  // Fungsi untuk membuka modal edit produk
   const handleEdit = async (id) => {
     try {
+      // Ambil detail produk dari API
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}api/products/${id}`
       );
-      setCurrentProduct({ ...response.data, image: null }); // Reset image to null for file upload
+      setCurrentProduct({ ...response.data, image: null }); // Set data produk, reset image untuk upload baru
     } catch (error) {
-      console.error("Error fetching product details:", error);
+      console.error("Gagal mengambil detail produk:", error);
     }
 
-    setIsEditing(true);
-    setShowModal(true);
+    setIsEditing(true); // Set status edit
+    setShowModal(true); // Tampilkan modal
   };
 
+  // Fungsi untuk menghapus produk
   const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this product?")) {
+    if (window.confirm("Apakah Anda yakin ingin menghapus produk ini?")) {
       try {
         await axios.delete(
           `${process.env.REACT_APP_BASE_URL}api/products/${id}`
         );
+        // Hapus produk dari state
         setProducts(products.filter((product) => product._id !== id));
-        showToast("Product deleted successfully", "success");
+        showToast("Produk berhasil dihapus", "success");
       } catch (error) {
-        console.error("Error deleting product:", error);
-        showToast("Failed to delete product", "error");
+        console.error("Gagal menghapus produk:", error);
+        showToast("Gagal menghapus produk", "error");
       }
     }
   };
 
+  // Fungsi untuk submit form (tambah/edit produk)
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setError(""); // Reset pesan error
 
+    // Siapkan form data untuk upload
     const formData = new FormData();
     formData.append("name", currentProduct.name);
     formData.append("price", currentProduct.price);
     formData.append("description", currentProduct.description);
     formData.append("stock", currentProduct.stock);
 
+    // Tambahkan file gambar jika ada
     if (currentProduct.image) {
       formData.append("thumbnail", currentProduct.image);
     }
 
     try {
       if (isEditing) {
+        // Update produk yang ada
         await axios.patch(
           `${process.env.REACT_APP_BASE_URL}api/products/${currentProduct._id}`,
           formData,
@@ -129,9 +144,10 @@ const ProductManagement = () => {
             },
           }
         );
-        fetchProducts();
-        showToast("Product updated successfully", "success");
+        fetchProducts(); // Refresh data produk
+        showToast("Produk berhasil diperbarui", "success");
       } else {
+        // Tambah produk baru
         const response = await axios.post(
           `${process.env.REACT_APP_BASE_URL}api/products`,
           formData,
@@ -141,38 +157,42 @@ const ProductManagement = () => {
             },
           }
         );
-        setProducts([...products, response.data]);
-        showToast("Product added successfully", "success");
+        setProducts([...products, response.data]); // Tambahkan produk baru ke state
+        showToast("Produk berhasil ditambahkan", "success");
       }
 
-      setShowModal(false);
-      navigate("/admin/products");
+      setShowModal(false); // Tutup modal
+      navigate("/admin/products"); // Kembali ke halaman produk
     } catch (error) {
-      console.error("Error saving product:", error);
-      setError(error.response?.data?.message || "Failed to save product");
+      console.error("Gagal menyimpan produk:", error);
+      setError(error.response?.data?.message || "Gagal menyimpan produk");
     }
   };
 
+  // Handler untuk perubahan input form
   const handleInputChange = (e) => {
     const { name, value, type, files } = e.target;
     if (type === "file") {
-      setCurrentProduct({ ...currentProduct, image: files[0] });
+      setCurrentProduct({ ...currentProduct, image: files[0] }); // Simpan file gambar
     } else {
-      setCurrentProduct({ ...currentProduct, [name]: value });
+      setCurrentProduct({ ...currentProduct, [name]: value }); // Update field lainnya
     }
   };
 
+  // Fungsi untuk logout admin
   const handleLogout = () => {
     localStorage.removeItem("adminToken");
     localStorage.removeItem("adminName");
     navigate("/admin/login");
   };
 
+  // Fungsi untuk menampilkan notifikasi toast
   const showToast = (message, type) => {
     setToast({ show: true, message, type });
     setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
   };
 
+  // Fungsi untuk memformat harga ke format mata uang IDR
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -183,7 +203,7 @@ const ProductManagement = () => {
 
   return (
     <div className="admin-dashboard">
-      {/* Sidebar */}
+      {/* Sidebar navigasi */}
       <div className="admin-sidebar">
         <div className="admin-sidebar-header">
           <h2>Nusantara Brew</h2>
@@ -191,6 +211,7 @@ const ProductManagement = () => {
         </div>
 
         <div className="admin-sidebar-menu">
+          {/* Menu Dashboard */}
           <Link
             to="/admin/dashboard"
             className={`admin-sidebar-item ${
@@ -201,6 +222,7 @@ const ProductManagement = () => {
             <span>Dashboard</span>
           </Link>
 
+          {/* Menu Produk */}
           <Link
             to="/admin/products"
             className={`admin-sidebar-item ${
@@ -211,6 +233,7 @@ const ProductManagement = () => {
             <span>Products</span>
           </Link>
 
+          {/* Menu Pengguna */}
           <Link
             to="/admin/users"
             className={`admin-sidebar-item ${
@@ -222,6 +245,7 @@ const ProductManagement = () => {
           </Link>
         </div>
 
+        {/* Tombol Logout */}
         <div className="admin-sidebar-footer">
           <button className="admin-logout-button" onClick={handleLogout}>
             <LogOut size={18} />
@@ -230,8 +254,9 @@ const ProductManagement = () => {
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* Konten utama */}
       <div className="admin-content">
+        {/* Header konten */}
         <div className="admin-content-header">
           <h1 className="admin-content-title">Product Management</h1>
           <button className="admin-form-button primary" onClick={handleAddNew}>
@@ -239,18 +264,19 @@ const ProductManagement = () => {
           </button>
         </div>
 
+        {/* Tabel produk */}
         {loading ? (
-          <p>Loading products...</p>
+          <p>Memuat data produk...</p>
         ) : (
           <div className="admin-table-container">
             <table className="admin-table">
               <thead>
                 <tr>
-                  <th>Image</th>
-                  <th>Name</th>
-                  <th>Price</th>
-                  <th>Description</th>
-                  <th>Actions</th>
+                  <th>Gambar</th>
+                  <th>Nama</th>
+                  <th>Harga</th>
+                  <th>Deskripsi</th>
+                  <th>Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -294,13 +320,13 @@ const ProductManagement = () => {
           </div>
         )}
 
-        {/* Product Form Modal */}
+        {/* Modal form produk */}
         {showModal && (
           <div className="admin-modal-overlay">
             <div className="admin-modal">
               <div className="admin-modal-header">
                 <h2 className="admin-modal-title">
-                  {isEditing ? "Edit Product" : "Add New Product"}
+                  {isEditing ? "Edit Produk" : "Tambah Produk Baru"}
                 </h2>
                 <button
                   className="admin-modal-close"
@@ -322,7 +348,7 @@ const ProductManagement = () => {
                   encType="multipart/form-data"
                 >
                   <div className="admin-form-group">
-                    <label htmlFor="name">Product Name</label>
+                    <label htmlFor="name">Nama Produk</label>
                     <input
                       type="text"
                       id="name"
@@ -333,7 +359,7 @@ const ProductManagement = () => {
                   </div>
 
                   <div className="admin-form-group">
-                    <label htmlFor="price">Price (IDR)</label>
+                    <label htmlFor="price">Harga (IDR)</label>
                     <input
                       type="number"
                       id="price"
@@ -344,7 +370,7 @@ const ProductManagement = () => {
                   </div>
 
                   <div className="admin-form-group">
-                    <label htmlFor="image">Image File</label>
+                    <label htmlFor="image">File Gambar</label>
                     <input
                       type="file"
                       id="image"
@@ -358,7 +384,7 @@ const ProductManagement = () => {
                     className="admin-form-group"
                     style={{ gridColumn: "1 / -1" }}
                   >
-                    <label htmlFor="description">Description</label>
+                    <label htmlFor="description">Deskripsi</label>
                     <textarea
                       id="description"
                       name="description"
@@ -376,11 +402,11 @@ const ProductManagement = () => {
                         navigate("/admin/products");
                       }}
                     >
-                      Cancel
+                      Batal
                     </button>
                     <button type="submit" className="admin-form-button primary">
                       <Save size={18} />{" "}
-                      {isEditing ? "Update Product" : "Add Product"}
+                      {isEditing ? "Update Produk" : "Tambah Produk"}
                     </button>
                   </div>
                 </form>
@@ -389,7 +415,7 @@ const ProductManagement = () => {
           </div>
         )}
 
-        {/* Toast Notification */}
+        {/* Notifikasi Toast */}
         {toast.show && (
           <div className={`toast toast-${toast.type}`}>{toast.message}</div>
         )}

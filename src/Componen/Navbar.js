@@ -1,69 +1,87 @@
-"use client"
-
-import { useState, useRef, useEffect } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import { Search, Menu, X } from "lucide-react"
-import "./Navbar.css"
-import Logo from "./homeAssets/logo.png"
+import { useState, useRef, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Search, Menu, X } from "lucide-react";
+import "./Navbar.css";
+import Logo from "./homeAssets/logo.png";
 
 export const Navbar = () => {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [menuOpen, setMenuOpen] = useState(false)
-  const searchRef = useRef(null)
-  const navigate = useNavigate()
+  const [searchTerm, setSearchTerm] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const searchRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    // Menutup kolom pencarian jika klik di luar area input
     const handleClickOutside = (event) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
-        setSearchTerm("")
+        setSearchTerm("");
       }
-    }
-    document.addEventListener("mousedown", handleClickOutside)
+    };
+    document.addEventListener("mousedown", handleClickOutside);
 
-    // Prevent scrolling when mobile menu is open
+    // Menonaktifkan scroll jika menu mobile dibuka
     if (menuOpen) {
-      document.body.style.overflow = "hidden"
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "auto"
+      document.body.style.overflow = "auto";
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-      document.body.style.overflow = "auto"
-    }
-  }, [menuOpen])
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.body.style.overflow = "auto";
+    };
+  }, [menuOpen]);
 
-  // Fungsi pencarian
+  // Fungsi untuk menjalankan pencarian dan mengarahkan ke halaman produk
   const handleSearch = () => {
-    if (searchTerm.trim() !== "") {
-      navigate(`/Product?search=${searchTerm}`)
-      setMenuOpen(false)
+    // console.log("tol");
+    console.log(searchTerm);
+
+    const trimmed = searchTerm.trim();
+
+    if (trimmed !== "") {
+      navigate(`/product?search=${trimmed}`);
+      setMenuOpen(false);
     }
-  }
+  };
 
+  // Toggle menu mobile
   const toggleMenu = () => {
-    setMenuOpen(!menuOpen)
-  }
+    setMenuOpen(!menuOpen);
+  };
 
+  // Menutup menu ketika navigasi dilakukan
   const closeMenu = () => {
-    setMenuOpen(false)
-  }
+    setMenuOpen(false);
+  };
 
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        {/* Logo */}
+        {/* Logo dan nama brand */}
         <div className="navbar-logo-container">
-          <img src={Logo || "/placeholder.svg"} alt="Nusantara Brew" className="navbar-logo" />
+          <img
+            src={Logo || "/placeholder.svg"}
+            alt="Nusantara Brew"
+            className="navbar-logo"
+          />
           <span className="navbar-brand">Nusantara Brew</span>
         </div>
 
-        {/* Mobile Menu Toggle */}
-        <button className="navbar-toggle" onClick={toggleMenu} aria-label="Toggle menu">
-          {menuOpen ? <X size={24} color="#fff" /> : <Menu size={24} color="#fff" />}
+        {/* Tombol toggle untuk menu mobile */}
+        <button
+          className="navbar-toggle"
+          onClick={toggleMenu}
+          aria-label="Toggle menu"
+        >
+          {menuOpen ? (
+            <X size={24} color="#fff" />
+          ) : (
+            <Menu size={24} color="#fff" />
+          )}
         </button>
 
-        {/* Menu */}
+        {/* Menu navigasi */}
         <ul className={`navbar-menu ${menuOpen ? "active" : ""}`}>
           <li className="navbar-item">
             <Link to="/" className="navbar-link" onClick={closeMenu}>
@@ -86,7 +104,7 @@ export const Navbar = () => {
             </Link>
           </li>
 
-          {/* Search in mobile menu */}
+          {/* Pencarian di dalam menu mobile */}
           {menuOpen && (
             <div className="search-container" ref={searchRef}>
               <input
@@ -104,7 +122,7 @@ export const Navbar = () => {
           )}
         </ul>
 
-        {/* Search for desktop */}
+        {/* Pencarian versi desktop (di luar menu mobile) */}
         {!menuOpen && (
           <div className="search-container" ref={searchRef}>
             <input
@@ -122,5 +140,5 @@ export const Navbar = () => {
         )}
       </div>
     </nav>
-  )
-}
+  );
+};

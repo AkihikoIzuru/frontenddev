@@ -13,55 +13,72 @@ import {
 import "./AdminStyles.css";
 
 const AdminDashboard = () => {
+  // State untuk menyimpan statistik dashboard
   const [stats, setStats] = useState({
     totalProducts: 0,
     totalUsers: 0,
     totalOrders: 0,
     totalRevenue: 0,
   });
-  // const [recentProducts, setRecentProducts] = useState([])
+
+  // State untuk loading indicator
   const [loading, setLoading] = useState(true);
+
+  // Hook untuk navigasi dan lokasi
   const navigate = useNavigate();
   const location = useLocation();
+
+  // State untuk daftar produk
   const [products, setProducts] = useState([]);
 
-  // const [recentProducts, setRecentProducts] = useState([]);
-
+  // Fungsi untuk mengambil data dari API
   const fetch = async () => {
     try {
+      // Mengambil data produk
       const Presponse = await axios.get(
         `${process.env.REACT_APP_BASE_URL}api/products`
       );
 
+      // Mengambil data transaksi
       const Tresponse = await axios.get(
         `${process.env.REACT_APP_BASE_URL}api/transactions`
       );
 
+      // Menyimpan data produk ke state
       setProducts(Presponse.data);
 
+      // Update status loading jika data berhasil diambil
       if (Presponse.status === 200) {
         setLoading(false);
       }
 
+      // Update statistik dashboard
       setStats({
         totalProducts: Presponse.data.length,
         totalOrders: Tresponse.data.length,
       });
 
       setLoading(false);
-    } catch (error) {}
+    } catch (error) {
+      // Handle error jika terjadi kesalahan
+      console.error("Gagal mengambil data:", error);
+      setLoading(false);
+    }
   };
 
+  // Efek untuk memanggil fungsi fetch saat komponen pertama kali render
   useEffect(() => {
     fetch();
   }, []);
 
+  // Fungsi untuk logout admin
   const handleLogout = () => {
     localStorage.removeItem("adminToken");
     localStorage.removeItem("adminName");
     navigate("/admin/login");
   };
 
+  // Fungsi untuk memformat mata uang
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -72,13 +89,14 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-dashboard">
-      {/* Sidebar */}
+      {/* Sidebar navigasi */}
       <div className="admin-sidebar">
         <div className="admin-sidebar-header">
           <h2>Nusantara Brew</h2>
           <p>Admin Panel</p>
         </div>
 
+        {/* Menu sidebar */}
         <div className="admin-sidebar-menu">
           <Link
             to="/admin/dashboard"
@@ -111,6 +129,7 @@ const AdminDashboard = () => {
           </Link>
         </div>
 
+        {/* Tombol logout */}
         <div className="admin-sidebar-footer">
           <button className="admin-logout-button" onClick={handleLogout}>
             <LogOut size={18} />
@@ -119,18 +138,19 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* Konten utama dashboard */}
       <div className="admin-content">
         <div className="admin-content-header">
           <h1 className="admin-content-title">Dashboard</h1>
           <p>Welcome back, {localStorage.getItem("adminName") || "Admin"}</p>
         </div>
 
+        {/* Tampilkan loading jika data sedang diambil */}
         {loading ? (
           <p>Loading dashboard data...</p>
         ) : (
           <>
-            {/* Stats Cards */}
+            {/* Kartu statistik */}
             <div className="dashboard-cards">
               <div className="dashboard-card">
                 <div className="dashboard-card-icon">
@@ -141,16 +161,6 @@ const AdminDashboard = () => {
                   <p>{stats.totalProducts}</p>
                 </div>
               </div>
-
-              {/* <div className="dashboard-card">
-                <div className="dashboard-card-icon">
-                  <Users size={24} />
-                </div>
-                <div className="dashboard-card-content">
-                  <h3>Total Users</h3>
-                  <p>{stats.totalUsers}</p>
-                </div>
-              </div> */}
 
               <div className="dashboard-card">
                 <div className="dashboard-card-icon">
@@ -163,7 +173,7 @@ const AdminDashboard = () => {
               </div>
             </div>
 
-            {/* Recent Products */}
+            {/* Tabel produk terbaru */}
             <div className="admin-content-section">
               <h2 className="admin-section-title">Recent Products</h2>
               <div className="admin-table-container">
@@ -172,7 +182,6 @@ const AdminDashboard = () => {
                     <tr>
                       <th>Product Name</th>
                       <th>Price</th>
-
                       <th>Actions</th>
                     </tr>
                   </thead>
@@ -181,7 +190,6 @@ const AdminDashboard = () => {
                       <tr key={product._id}>
                         <td>{product.name}</td>
                         <td>{formatCurrency(product.price)}</td>
-
                         <td>
                           <div className="admin-table-actions">
                             <Link

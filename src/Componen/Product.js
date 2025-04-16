@@ -1,60 +1,54 @@
-"use client"
-
-import "./Product.css"
-import { useEffect, useRef, useState } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
-import axios from "axios"
+import "./Product.css";
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export const Product = () => {
-  const scrollRef = useRef(null)
-  const scrollAmount = 300
-  const location = useLocation()
-  const navigate = useNavigate()
-  const searchParams = new URLSearchParams(location.search)
-  const searchQuery = searchParams.get("search")?.toLowerCase() || ""
+  // Referensi untuk elemen scroll (jika ingin menggunakan scroll horizontal)
+  const scrollRef = useRef(null);
 
-  const [products, setProducts] = useState([])
-  const [loading, setLoading] = useState(true)
+  // Lokasi URL saat ini, digunakan untuk mengambil query string (contoh: ?search=teh)
+  const location = useLocation();
+  const navigate = useNavigate();
 
+  // Ambil query parameter `search` dari URL, lalu ubah jadi huruf kecil
+  const searchParams = new URLSearchParams(location.search);
+  const searchQuery = searchParams.get("search")?.toLowerCase() || "";
+
+  // State untuk menyimpan data produk
+  const [products, setProducts] = useState([]);
+  // State untuk loading
+  const [loading, setLoading] = useState(true);
+
+  // Fungsi untuk mengambil data produk dari API
   const fetchProducts = async () => {
     try {
-      setLoading(true)
-      const response = await axios.get(`https://backenddev-six.vercel.app/api/products`)
-      setProducts(response.data)
-      setLoading(false)
+      setLoading(true); // Tampilkan loading
+      const response = await axios.get(
+        `https://backenddev-six.vercel.app/api/products`
+      );
+      setProducts(response.data); // Simpan data produk
+      setLoading(false); // Matikan loading
     } catch (error) {
-      console.error("Error fetching products:", error)
-      setLoading(false)
+      console.error("Error fetching products:", error);
+      setLoading(false); // Tetap matikan loading meski error
     }
-  }
+  };
 
+  // Ambil data produk saat komponen pertama kali dirender
   useEffect(() => {
-    fetchProducts()
-  }, [])
+    fetchProducts();
+  }, []);
 
-  const filteredProducts = products.filter((product) => product.name.toLowerCase().includes(searchQuery))
+  // Filter produk berdasarkan query pencarian dari URL
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchQuery)
+  );
 
+  // Fungsi untuk berpindah ke halaman checkout sambil mengirim data produk
   const handleCheckout = (product) => {
-    navigate("/checkout", { state: product })
-  }
-
-  const scrollLeft = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({
-        left: -scrollAmount,
-        behavior: "smooth",
-      })
-    }
-  }
-
-  const scrollRight = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({
-        left: scrollAmount,
-        behavior: "smooth",
-      })
-    }
-  }
+    navigate("/checkout", { state: product });
+  };
 
   return (
     <div className="container">
@@ -62,10 +56,6 @@ export const Product = () => {
       <p className="subtitle">Cemilan dan Minuman Teh Nusantara</p>
 
       <div className="scroll-wrapper">
-        <button className="scroll-btn left" onClick={scrollLeft} aria-label="Scroll left">
-          &#10094;
-        </button>
-
         <div className="grid-container" ref={scrollRef}>
           {loading ? (
             <p>Loading products...</p>
@@ -74,9 +64,16 @@ export const Product = () => {
               <div key={index} className="product-wrapper">
                 <div className="product-card">
                   <div className="product-image-container">
-                    <img src={product.thumbnail || "/placeholder.svg"} alt={product.name} className="product-image" />
+                    <img
+                      src={product.thumbnail || "/placeholder.svg"}
+                      alt={product.name}
+                      className="product-image"
+                    />
                   </div>
-                  <button className="product-name" onClick={() => handleCheckout(product)}>
+                  <button
+                    className="product-name"
+                    onClick={() => handleCheckout(product)}
+                  >
                     {product.name}
                   </button>
                 </div>
@@ -86,11 +83,7 @@ export const Product = () => {
             <p className="no-result">Produk tidak ditemukan</p>
           )}
         </div>
-
-        <button className="scroll-btn right" onClick={scrollRight} aria-label="Scroll right">
-          &#10095;
-        </button>
       </div>
     </div>
-  )
-}
+  );
+};

@@ -1,30 +1,28 @@
-"use client"
-
-import "./App.css"
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import { useState, useEffect } from "react"
-import { Navbar } from "./Componen/Navbar"
-import { Home } from "./Componen/Home"
-import { Product } from "./Componen/Product"
-import { Contact } from "./Componen/Contact"
-import { About } from "./Componen/About"
-import { CO } from "./Componen/CO"
-import AdminLogin from "./Componen/Admin/AdminLogin"
-import AdminDashboard from "./Componen/Admin/AdminDashboard"
-import ProductManagement from "./Componen/Admin/ProductManagement"
-import UserManagement from "./Componen/Admin/UserManagement"
-import ProtectedRoute from "./Componen/Admin/ProtectedRoute"
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Navbar } from "./Componen/Navbar";
+import { Home } from "./Componen/Home";
+import { Product } from "./Componen/Product";
+import { Contact } from "./Componen/Contact";
+import { About } from "./Componen/About";
+import { CO } from "./Componen/CO";
+import AdminLogin from "./Componen/Admin/AdminLogin";
+import AdminDashboard from "./Componen/Admin/AdminDashboard";
+import ProductManagement from "./Componen/Admin/ProductManagement";
+import UserManagement from "./Componen/Admin/UserManagement";
+import ProtectedRoute from "./Componen/Admin/ProtectedRoute";
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     // Check if user is authenticated on app load
-    const token = localStorage.getItem("adminToken")
+    const token = localStorage.getItem("adminToken");
     if (token) {
-      setIsAuthenticated(true)
+      setIsAuthenticated(true);
     }
-  }, [])
+  }, []);
 
   return (
     <Router>
@@ -78,7 +76,10 @@ function App() {
           />
 
           {/* Admin Routes */}
-          <Route path="/admin/login" element={<AdminLogin setIsAuthenticated={setIsAuthenticated} />} />
+          <Route
+            path="/admin/login"
+            element={<AdminLogin setIsAuthenticated={setIsAuthenticated} />}
+          />
           <Route
             path="/admin/dashboard"
             element={
@@ -106,7 +107,7 @@ function App() {
         </Routes>
       </div>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;

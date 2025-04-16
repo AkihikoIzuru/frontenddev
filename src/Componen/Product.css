@@ -1,4 +1,3 @@
-/* Add better responsive styles to the Product component */
 /* --- TOMBOL NAMA PRODUK --- */
 .product-name {
   background-color: #fab82a;
@@ -56,36 +55,32 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
   position: relative;
-  overflow: hidden;
   width: 90%;
   max-width: 1200px;
   padding: 10px 0;
   margin: 20px 0;
 }
 
+/* --- UBAH GRID-CONTAINER MENJADI RESPONSIVE GRID --- */
 .grid-container {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 kolom tetap di desktop */
   gap: 20px;
-  overflow-x: auto;
-  scroll-behavior: smooth;
+  width: 100%;
   padding: 10px;
-  white-space: nowrap;
-  max-width: 100%;
-  scrollbar-width: none; /* Firefox */
-}
-
-.grid-container::-webkit-scrollbar {
-  display: none;
 }
 
 /* --- CARD PRODUK --- */
 .product-wrapper {
   position: relative;
+  width: 100%;
 }
 
 .product-card {
-  width: 250px;
+  width: 100%;
+  max-width: 300px;
   height: 320px;
   background: rgba(250, 213, 111, 0.877);
   border-radius: 12px;
@@ -93,6 +88,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease-in-out;
   text-align: center;
+  margin: 0 auto;
 }
 
 .product-card:hover {
@@ -112,7 +108,7 @@
   border-radius: 8px;
 }
 
-/* --- TOMBOL SCROLL --- */
+/* --- TOMBOL SCROLL (DISARANKAN TIDAK DIPAKAI DI MODE GRID) --- */
 .scroll-controls {
   width: 100%;
   display: flex;
@@ -221,6 +217,10 @@
 
 /* --- RESPONSIVE DESIGN --- */
 @media (max-width: 992px) {
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 kolom di tablet */
+  }
+
   .title {
     font-size: 2.5rem;
   }
@@ -236,7 +236,6 @@
   }
 
   .product-card {
-    width: 220px;
     height: 300px;
   }
 
@@ -246,6 +245,9 @@
 }
 
 @media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr; /* 1 kolom di mobile */
+  }
   .container {
     padding: 15px;
   }
@@ -259,7 +261,6 @@
   }
 
   .product-card {
-    width: 200px;
     height: 280px;
   }
 
@@ -297,7 +298,6 @@
   }
 
   .product-card {
-    width: 180px;
     height: 250px;
   }
 
