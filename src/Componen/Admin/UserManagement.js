@@ -62,12 +62,9 @@ const UserManagement = () => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       try {
         const token = localStorage.getItem("adminToken");
-        await axios.delete(
-          `${process.env.REACT_APP_BASE_URL}/api/users/${id}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        await axios.delete(`${process.env.REACT_APP_BASE_URL}api/users/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setUsers(users.filter((user) => user._id !== id));
         showToast("User deleted successfully", "success");
       } catch (error) {
@@ -91,7 +88,7 @@ const UserManagement = () => {
       };
 
       await axios.put(
-        `${process.env.REACT_APP_BASE_URL}/api/users/${currentUser._id}`,
+        `${process.env.REACT_APP_BASE_URL}api/users/${currentUser._id}`,
         userData,
         {
           headers: { Authorization: `Bearer ${token}` },
