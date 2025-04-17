@@ -12,15 +12,17 @@ import AdminDashboard from "./Componen/Admin/AdminDashboard";
 import ProductManagement from "./Componen/Admin/ProductManagement";
 import UserManagement from "./Componen/Admin/UserManagement";
 import ProtectedRoute from "./Componen/Admin/ProtectedRoute";
+import NotFound from "./Componen/NotFound";
 
 function App() {
+  // State untuk menyimpan status autentikasi admin
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    // Check if user is authenticated on app load
+    // Cek token autentikasi admin saat aplikasi pertama kali dimuat
     const token = localStorage.getItem("adminToken");
     if (token) {
-      setIsAuthenticated(true);
+      setIsAuthenticated(true); // Jika token ada, berarti admin sudah login
     }
   }, []);
 
@@ -28,7 +30,8 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          {/* Public Routes */}
+          {/* Route Publik - halaman yang bisa diakses oleh semua pengguna */}
+
           <Route
             path="/"
             element={
@@ -75,11 +78,15 @@ function App() {
             }
           />
 
-          {/* Admin Routes */}
+          {/* Route Admin - hanya bisa diakses jika sudah login sebagai admin */}
+
+          {/* Halaman login admin */}
           <Route
             path="/admin/login"
             element={<AdminLogin setIsAuthenticated={setIsAuthenticated} />}
           />
+
+          {/* Dashboard admin (dilindungi dengan ProtectedRoute) */}
           <Route
             path="/admin/dashboard"
             element={
@@ -88,6 +95,8 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          {/* Manajemen produk oleh admin */}
           <Route
             path="/admin/products"
             element={
@@ -96,6 +105,8 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          {/* Manajemen pengguna oleh admin */}
           <Route
             path="/admin/users"
             element={
@@ -104,6 +115,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/*" element={<NotFound />} />
         </Routes>
       </div>
     </Router>
